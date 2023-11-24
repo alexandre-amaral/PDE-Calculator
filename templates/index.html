@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calculadora PDE</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="/templates/resources/css/index.css" rel="stylesheet">
+    <style>
+      /*
+ * Globals
+ */
+
+
+/* Custom default button */
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus {
+  color: #333;
+  text-shadow: none; /* Prevent inheritance from `body` */
+}
+
+
+/*
+ * Base structure
+ */
+
+body {
+  text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+  box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
+}
+
+.cover-container {
+  max-width: 42em;
+}
+
+
+/*
+ * Header
+ */
+
+.nav-masthead .nav-link {
+  padding: .25rem 0;
+  font-weight: 700;
+  color: rgba(255, 255, 255, .5);
+  background-color: transparent;
+  border-bottom: .25rem solid transparent;
+}
+
+.nav-masthead .nav-link:hover,
+.nav-masthead .nav-link:focus {
+  border-bottom-color: rgba(255, 255, 255, .25);
+}
+
+.nav-masthead .nav-link + .nav-link {
+  margin-left: 1rem;
+}
+
+.nav-masthead .active {
+  color: #fff;
+  border-bottom-color: #fff;
+}
+
+/*
+ * Body
+ */
+
+.bd-placeholder-img {
+  font-size: 1.125rem;
+  text-anchor: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+@media (min-width: 768px) {
+  .bd-placeholder-img-lg {
+    font-size: 3.5rem;
+  }
+}
+
+.spinner {
+    border: 4px solid rgba(0,0,0,0.1);
+    border-radius: 50%;
+    border-top: 4px solid #3498db;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+    </style>
+  
+  </head>
+
+  <body class="d-flex h-100 text-center text-white bg-dark">
+
+  <!-- Tela de Carregamento -->
+<div id="loadingScreen" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8); z-index: 9999;">
+  <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+      <div class="spinner"></div>
+      <p>Carregando...</p>
+  </div>
+</div>
+    
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+  <header class="mb-auto">
+    <div>
+      <h3 class="float-md-start mb-0">Calculadora PDE</h3>
+      <nav class="nav nav-masthead justify-content-center float-md-end">
+        <a class="nav-link active" aria-current="page" href="#">Calculadora PDE</a>
+        <a class="nav-link" href="#">Histórico</a>
+        <a class="nav-link" href="#">Meus dossiês</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="px-3"><p class="mb-3" style="font-size: 18px;">Insira a substância (Em Inglês)</p>
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" id="substanceNameInput" placeholder="Insira a Substância" aria-label="Substância">
+    </div>
+    <form id="formulario" class="row g-6">
+      <div class="col-md-2" style="display: none;" id="effective_dose_valueDiv">
+        <span class="input-group-text" id="basic-addon1">LD50 mg</span>
+        <input type="text" class="form-control" id="effective_dose_valueInput" name="ld50">
+      </div>
+      <div class="col-md-2" style="display: none;" id="f1Div">
+        <span class="input-group-text" id="basic-addon1">F1</span>
+        <input type="text" class="form-control" id="f1Input" name="f1">
+      </div>
+      <div class="col-md-2" style="display: none;" id="f2Div">
+        <span class="input-group-text" id="basic-addon1">F2</span>
+        <input type="text" class="form-control" id="f2Input" name="f2">
+      </div>
+      <div class="col-md-2" style="display: none;" id="f3Div">
+        <span class="input-group-text" id="basic-addon1">F3</span>
+        <input type="text" class="form-control" id="f3Input" name="f3">
+      </div>
+      <div class="col-md-2" style="display: none;" id="f4Div">
+        <span class="input-group-text" id="basic-addon1">F4</span>
+        <input type="text" class="form-control" id="f4Input" name="f4">
+      </div>
+      <div class="col-md-2 " style="display: none;" id="f5Div">
+        <span class="input-group-text" id="basic-addon1">F5</span>
+        <input type="text" class="form-control" id="f5Input" name="f5">
+      </div>
+      <div class="col-md-2 mt-4" style="display: none;" id="pdeDiv">
+        <span class="input-group-text-lg"  id="basic-addon1">PDE mg/d </span>
+        <input type="text" class="form-control-lg" id="pdeInput" name="pde">
+      </div>
+    </form>
+
+  <div class="mt-5">
+    <button id="calculatePdeButton" type="button" class="btn btn-primary">Calcular PDE</button>
+    <button id="calcula" type="button" class="btn btn-secondary">Gerar dossie</button>
+  </div>
+  </main>
+
+  <footer class="mt-auto text-white-50">
+    <p>Direitos reservados a <a class="text-white">Calculadora PDE</a></p>
+  </footer>
+</div>
+
+  <script src="/frontend/js/index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+  <script>
+    function showLoadingScreen() {
+        // Adicione o código para mostrar a tela de carregamento
+        document.getElementById('loadingScreen').style.display = 'block';
+    }
+
+    function hideLoadingScreen() {
+        // Adicione o código para esconder a tela de carregamento
+        document.getElementById('loadingScreen').style.display = 'none';
+    }
+
+    document.getElementById('calculatePdeButton').addEventListener('click', function(event) {
+        event.preventDefault();
+
+        var substanceName = document.getElementById('substanceNameInput').value;
+        
+        showLoadingScreen(); // Mostrar a tela de carregamento
+
+        fetch('/calculate_pde', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ substanceName: substanceName })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Atualizar campos com dados recebidos
+
+            
+
+            document.getElementById('effective_dose_valueDiv').style.display = 'block';
+            document.getElementById('effective_dose_valueInput').value = data.effective_dose_value;
+            document.getElementById('effective_dose_valueInput').readOnly = true;
+
+            document.getElementById('f1Div').style.display = 'block';
+            document.getElementById('f1Input').value = data.f1;
+            document.getElementById('f1Input').readOnly = true;
+
+            document.getElementById('f2Div').style.display = 'block';
+            document.getElementById('f2Input').value = data.f2;
+            document.getElementById('f2Input').readOnly = true;
+
+            document.getElementById('f3Div').style.display = 'block';
+            document.getElementById('f3Input').value = data.f3;
+            document.getElementById('f3Input').readOnly = true;
+
+            document.getElementById('f4Div').style.display = 'block';
+            document.getElementById('f4Input').value = data.f4;
+            document.getElementById('f4Input').readOnly = true;
+
+            document.getElementById('f5Div').style.display = 'block';
+            document.getElementById('f5Input').value = data.f5;
+            document.getElementById('f5Input').readOnly = true;
+
+            document.getElementById('pdeDiv').style.display = 'block';
+            document.getElementById('pdeInput').value = data.pde;
+            document.getElementById('pdeInput').readOnly = true;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        })
+        .finally(() => {
+            hideLoadingScreen(); // Esconder a tela de carregamento
+        });
+    });
+</script>
+
+  </body>
+</html>
