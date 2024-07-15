@@ -46,9 +46,10 @@ text = json.dumps(data)
 
 prompt = f"{prompt_teamplate} + {text}"
 
-api_key = "REMOVED"
+import os
 
-client = OpenAI(api_key= api_key)
+api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=api_key)
 
 completion = client.chat.completions.create(
         model = "gpt-3.5-turbo",
