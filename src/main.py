@@ -8,7 +8,7 @@ import re
 import logger
 import logging
 
-from extractorTest import Extractor
+from Extractor import Extractor
 
 
 logger.init()
